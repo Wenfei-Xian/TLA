@@ -19,3 +19,5 @@ options:
 -p int        minimum percentage of reads contained perfect tandem repeats (default:0.3)   
 -c int        coverage threshold for the generation of consensus sequences (default:2)   
 ```
+
+![alt text](https://github.com/Wenfei-Xian/TLA/blob/main/TLA_github.png)
