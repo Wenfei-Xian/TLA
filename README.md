@@ -2,7 +2,7 @@
 Telomere local assembly
 
 # Install   
-make HTSLIB_PATH=/path/to/(htslib)[https://github.com/samtools/htslib] SPOA_PATH=/path/to/spoa
+make HTSLIB_PATH=/path/to/[htslib](https://github.com/samtools/htslib) SPOA_PATH=/path/to/[spoa](https://github.com/rvaser/spoa)   
 
 # Usage
 TLA: Telomere local assembly   
