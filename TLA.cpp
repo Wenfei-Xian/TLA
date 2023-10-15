@@ -89,7 +89,7 @@ int main(int argc, char** argv) {
 		return usage();
 	}
 
-	const char* bam_file;
+	const char* bam_file=nullptr;
 	size_t minimum_contig_length=500000;
 	size_t distance_to_start_or_end=10000;
 	//int length_retain=15000;
