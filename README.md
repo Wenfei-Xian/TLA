@@ -2,7 +2,7 @@
 Telomere local assembly
 
 # Install   
-TLA relies on htslib and spoa
+TLA relies on [htslib](https://github.com/samtools/htslib) and [spoa](https://github.com/rvaser/spoa)
 ```
 make HTSLIB_PATH=/path/to/htslib SPOA_PATH=/path/to/spoa
 ```
