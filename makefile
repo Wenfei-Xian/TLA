@@ -4,7 +4,7 @@ CXXFLAGS = -Wall
 
 TARGET = TLA
 
-SRC = TLA.v1.cpp
+SRC = TLA.cpp
 
 INCLUDES = -I$(HTSLIB_PATH)/include \
            -I$(SPOA_PATH)/include
