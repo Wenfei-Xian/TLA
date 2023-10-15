@@ -1,6 +1,6 @@
 CXX = g++
 
-CXXFLAGS = -Wall
+CXXFLAGS = -Wall -O3
 
 TARGET = TLA
 

@@ -17,11 +17,16 @@ int usage(){
 	std::cout << "-b string     alignment file in bam format" << std::endl;
 	std::cout << "-m int        minimum length of contigs will be used (default:500kb)" << std::endl;
 	std::cout << "-d int        the distance to the start or end of contigs, used to extract reads in the BAM file (default:10kb)" << std::endl;
-	std::cout << "-l int        the length to trim from the far left or far right end of the reads (default:15kb)" << std::endl;
+	//std::cout << "-l int        the length to trim from the far left or far right end of the reads (default:15kb)" << std::endl;
 	std::cout << "-s int        minimum length of perfect tandem repeats region(default:100bp)" << std::endl;
 	std::cout << "-p int        minimum percentage of reads contained perfect tandem repeats (default:0.3)" << std::endl;
 	std::cout << "-c int        coverage threshold for the generation of consensus sequences (default:2)" << std::endl;
 	return 0;
+}
+
+template <typename Container>
+int length(const Container& c) {
+    return static_cast<int>(c.size());
 }
 
 int detect_longest_tandem_repeat( std::string& DNA, const int cutoffunit_p, const int unitlen_p) {
@@ -85,12 +90,12 @@ int main(int argc, char** argv) {
 	}
 
 	const char* bam_file;
-	int minimum_contig_length=500000;
-	int distance_to_start_or_end=10000;
-	int length_retain=15000;
-	int minimum_tandem_repeat_length=100;
-	int minimum_perfect_tandem_repeat=0.3;
-	int coverage=2;
+	size_t minimum_contig_length=500000;
+	size_t distance_to_start_or_end=10000;
+	//int length_retain=15000;
+	size_t minimum_tandem_repeat_length=100;
+	size_t minimum_perfect_tandem_repeat=0.3;
+	size_t coverage=2;
 	int a;
 
 	while(( a=getopt( argc, argv, "b:m:d:l:s:p:c:")) >= 0 ){
@@ -104,9 +109,9 @@ int main(int argc, char** argv) {
 		else if( a == 'd'){
 			distance_to_start_or_end=atoi(optarg);
 		}
-		else if( a == 'l' ){
-			length_retain=atoi(optarg);
-		}
+		//else if( a == 'l' ){
+		//	length_retain=atoi(optarg);
+		//}
 		else if( a == 's' ){
 			minimum_tandem_repeat_length=atoi(optarg);
 		}
@@ -146,7 +151,7 @@ int main(int argc, char** argv) {
 			std::vector<Read> start_reads_name, end_reads_name;
 
 			// Fetch reads from the start (0-5K)
-			int long_tandem_count_start = 0;
+			size_t long_tandem_count_start = 0;
 			hts_itr_t* iter = sam_itr_queryi(idx, i, 0, distance_to_start_or_end);
 			while (sam_itr_next(in, iter, aln) >= 0) {
 				std::string seq = bam_get_seq_string(aln);
@@ -160,7 +165,7 @@ int main(int argc, char** argv) {
 				//size_t len_to_extract = std::min<size_t>(minimum_contig_length, seq.length());
 				std::string DNA = seq.substr(0, len_to_extract);
 				
-				int longest_tandem = detect_longest_tandem_repeat(DNA, 50, 10);
+				size_t longest_tandem = detect_longest_tandem_repeat(DNA, 50, 10);
 				if(longest_tandem > minimum_tandem_repeat_length) {
 					start_reads.push_back(DNA);
 					start_reads_name.push_back(currentRead);
@@ -180,8 +185,8 @@ int main(int argc, char** argv) {
 			}
 
 			// Fetch reads from the end (-5K)
-			int long_tandem_count_end = 0;
-			int end_start = header->target_len[i] - distance_to_start_or_end;
+			size_t long_tandem_count_end = 0;
+			size_t end_start = header->target_len[i] - distance_to_start_or_end;
 			iter = sam_itr_queryi(idx, i, end_start, header->target_len[i]);
 			while (sam_itr_next(in, iter, aln) >= 0) {
 				std::string seq = bam_get_seq_string(aln);
@@ -195,7 +200,7 @@ int main(int argc, char** argv) {
 				//size_t len_to_extract = std::min<size_t>(minimum_contig_length, seq.length());
 				std::string DNA = seq.substr(seq.length() - len_to_extract);
 				
-				int longest_tandem = detect_longest_tandem_repeat(DNA, 50, 10);
+				size_t longest_tandem = detect_longest_tandem_repeat(DNA, 50, 10);
 				if(longest_tandem > minimum_tandem_repeat_length) {
 					end_reads.push_back(DNA);
 					end_reads_name.push_back(currentRead);
